@@ -34,12 +34,22 @@ const activePids = async (parentPid, tty) => {
 };
 
 const sendNotification = (window, command, start) => {
-  notifier.notify({
+  const durationSeconds = vscode.workspace.getConfiguration('background-terminal-notifier').get('notificationDuration') || 1;
+  const durationMilliseconds = durationSeconds * 60;
+
+  const notificationParams = {
     title: "A command completed!",
     message: command,
-    timeout: 100,
     closeLabel: 'Ok'
-  });
+  };
+
+  if (durationMilliseconds === 0) {
+    notificationParams.sticky = true;
+  } else {
+    notificationParams.timeout = durationMilliseconds;
+  }
+
+  notifier.notify(notificationParams);
 };
 
 const startListening = (window, intervals) => {
@@ -66,7 +76,7 @@ const startListening = (window, intervals) => {
             }
           }
           if (Object.keys(initalActive).length === 0) {
-              clearInterval(id)
+            clearInterval(id)
           }
         });
       }, pollFrequency * 1000);
@@ -95,5 +105,5 @@ function activate(context) {
   setupWindow(vscode.window);
 }
 exports.activate = activate;
-function deactivate() {}
+function deactivate() { }
 exports.deactivate = deactivate;

@@ -22,6 +22,12 @@
 					"title": "Poll frequency",
 					"type": "number",
 					"description": "Check for command completion every [n] seconds."
+				},
+				"background-terminal-notifier.notificationDuration": {
+					"default": 2,
+					"title": "Notification Display Duration",
+					"type": "number",
+					"description": "Number of seconds to show the notification.  (Set to zero to display until explicitly dismissed.)"
 				}
 			}
 		}
